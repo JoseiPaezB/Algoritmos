@@ -1,0 +1,182 @@
+body{
+    background-color: white !important;
+    font-family: 'Trebuchet MS', sans-serif;
+}
+
+.poli {
+    
+    font-family: 'Courier New', Courier, monospace !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.containerr {
+    
+    
+    margin-top:1rem; 
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    
+    width: 100%;
+    max-width: 400px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Esto hace que ocupe toda la altura de la página */
+}
+h1 {
+    text-align: center;
+    color: #333;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+label {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+textarea {
+    resize: vertical;
+    min-height: 100px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+.file-input-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+.file-input-wrapper .btn {
+    border: 2px solid #4CAF50;
+    color: #4CAF50;
+    background-color: white;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.file-name {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 25px !important; /* Bordes redondeados */ /* Bordes redondeados */
+
+    
+}
+button:hover {
+    background-color: #45a049;
+}
+.suggestions-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    position: absolute;
+    width: 100%;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.suggestion-item {
+    padding: 8px;
+    cursor: pointer;
+    background-color: white;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
+.highlight {
+    background-color: greenyellow; /* O cualquier color que prefieras */
+    font-weight: bold;
+}
+.card{
+    background-color: #000;
+}
+
+.button3{
+    margin-top:10rem !important;
+}
+.highlight2 {
+    background-color: yellow; /* Color de fondo para el resaltado */
+    font-weight: bold; /* Negrita para el texto resaltado */
+}.card-body input {
+    margin-bottom: 10px; /* Ajusta el espacio entre el input y el botón */
+   
+
+}
+
+.input-wrapper {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+input {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+label {
+    position: absolute;
+    left: 0.75rem;
+    top: 0.75rem;
+    color: #666;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+input:focus + label,
+input:not(:placeholder-shown) + label {
+    transform: translateY(-1.5rem) scale(0.8);
+    color: #3b82f6;
+    background-color: white;
+    padding: 0 0.25rem;
+}
+
+input:not(:placeholder-shown) {
+    border-color: #f6f6f6;
+}
+
+.navbar {
+    background-color: #333 !important ;
+    color: white !important;
+    padding: 1rem !important;
+    display: flex !important;
+    justify-content: center !important;
+   
+}

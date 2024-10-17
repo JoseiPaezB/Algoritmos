@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Input and File Upload</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <style>
+        /* Definir la animación con keyframes */
+        @keyframes highlight {
+            from {
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(76, 76, 63, 0.5);
+            }
+            to {
+                transform: scale(1.05);
+                box-shadow: 0 0 20px rgb(43, 49, 41);
+            }
+        }
+
+        /* Clase de animación */
+        .animate-card {
+            animation: highlight 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" id="refreshButton" href="#">Algoritmos</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#buscar">Buscar patron</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#">Similitud</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#palindromos">Palindromos</a> 
+              <li class="nav-item">
+                <a class="nav-link active" aria-disabled="true" href="#trie">AutoCompletar</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search"></form>
+          </div>
+        </div>
+      </nav>
+
+      </br>
+      </br>
+
+    <section class="poli">
+        <div class="containerr">
+            <h1>Sube un archivo</h1>
+            <form id="uploadForm">
+              <input type="file" id="fileInput" accept=".txt">
+              <p id="nameFile">Archivo seleccionado: Ninguno</p>
+              <button type="button" id="uploadBtn">Subir archivo</button>
+          </form>
+
+        </br>
+        <!-- Tarjeta 1: Palíndromos -->
+        <div class="card" id="palindromos" style="width: 18rem; background-color: black; color:white;">
+          <div class="card-body">
+            <h5 class="card-title">Palíndromos</h5>
+            <div id="result"></div>
+          </div>
+        </div>
+
+        </br>
+
+        <!-- Tarjeta 2: Trie -->
+        <div class="card" id="trie" style="width: 18rem; background-color: black; color:white;">
+          <div class="card-body">
+            <h5 class="card-title">Buscar en Trie</h5>
+            <input type="text" id="wordInput" placeholder="" autocomplete="off" />
+            <div id="suggestions" class="suggestions"></div> <!-- Contenedor para las sugerencias -->
+          </div>
+        </div>
+
+        </br>
+
+        <!-- Tarjeta 3: Buscar Patrón -->
+        <div class="card" id="buscar" style="width: 18rem; background-color: black; color:white;">
+          <div class="card-body">
+            <h5 class="card-title">Buscar</h5>
+            <input type="text" id="wordInput2" placeholder="" autocomplete="off" />
+            <br>
+            <button type="button button3" id="searchBtn">Buscar Patrón</button>
+            <div id="result3" class="result3"></div>
+          </div>
+        </div>
+
+      </br>
+      </div>
+    </section>
+
+    <script>
+      // Obtener todas las tarjetas por su ID
+      const palindromosCard = document.getElementById('palindromos');
+      const trieCard = document.getElementById('trie');
+      const buscarCard = document.getElementById('buscar');
+
+      // Función para agregar animación a la tarjeta y luego quitarla
+      function animateCard(card) {
+        card.classList.add('animate-card'); // Añadir la clase de animación
+
+        setTimeout(() => {
+          card.classList.remove('animate-card'); // Eliminar la clase de animación después de 500ms
+        }, 500); // Duración de la animación
+      }
+
+      // Agregar eventos de click en los enlaces
+      document.querySelectorAll('a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          const targetId = this.getAttribute('href').substring(1); // Obtener el ID del destino
+          
+          const targetCard = document.getElementById(targetId); // Obtener la tarjeta correspondiente
+
+          if (targetCard) {
+            animateCard(targetCard); // Aplicar la animación
+          }
+        });
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+</body>
+</html>
