@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Input and File Upload</title>
+    <title>E1. Actividad Integradora 1</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
@@ -59,12 +59,25 @@
         <div class="containerr" id="container">
             <h1>Sube un archivo</h1>
             <form id="uploadForm">
-              <input type="file" id="fileInput" accept=".txt">
-              <p id="nameFile">Archivo seleccionado: Ninguno</p>
-              <button type="button" id="uploadBtn">Subir archivo</button>
+              <input type="file" id="fileInput1" accept=".txt">
+              <p id="nameFile1">Archivo seleccionado: Ninguno</p>
+              <br>
+              <input type="file" id="fileInput2" accept=".txt">
+              <p id="nameFile2">Archivo seleccionado: Ninguno</p>
+              <br>
+              <button type="button" id="uploadBtn">Subir archivos</button>
           </form>
 
         </br>
+
+        <!-- Tarjeta 4: Similitudes -->
+        <div class="card" id="similitudes" style="width: 18rem; background-color: gray; color: white; display: none;">
+          <div class="card-body">
+              <h5 class="card-title">Similitudes</h5>
+              <p class="card-text">Ambos archivos han sido subidos exitosamente.</p>
+          </div>
+        </div>
+
         <!-- Tarjeta 1: Palíndromos -->
         <div class="card" id="palindromos" style="width: 18rem; background-color: black; color:white;">
           <div class="card-body">
@@ -96,6 +109,7 @@
             <div id="result3" class="result3" style="max-height: 400px; overflow-y: auto; position: relative; padding: 10px; margin-top: 20px;"></div>
           </div>
         </div>
+
 
       </br>
       </div>

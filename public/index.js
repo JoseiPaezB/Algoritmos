@@ -1,8 +1,8 @@
 
-document.getElementById('fileInput').addEventListener('input', function() {
-    var file = document.getElementById('fileInput').files[0];
+document.getElementById('fileInput1').addEventListener('input', function() {
+    var file = document.getElementById('fileInput1').files[0];
     if (file) {
-        document.getElementById('nameFile').innerHTML = `Archivo seleccionado: ${file.name}`;
+        document.getElementById('nameFile1').innerHTML = `Archivo seleccionado: ${file.name}`;
          // Limpia las sugerencias
          clearSuggestions();
     }
@@ -11,63 +11,97 @@ document.getElementById('fileInput').addEventListener('input', function() {
 document.getElementById("uploadBtn").addEventListener("click", function(event) {
     document.getElementById('poli').style.marginTop="6rem"; 
     event.preventDefault();
-    const file = document.getElementById('fileInput').files[0];
+    const file1 = document.getElementById('fileInput1').files[0];
+    const file2 = document.getElementById('fileInput2').files[0];
    
     // Mueve el contenedor hacia abajo
     
-    if (file) {
-        // Leer el contenido del archivo
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const fileContent = event.target.result;
+    if (file1 && file2) {
+        nameFile1.textContent = `Archivo seleccionado: ${file1.name}`;
+        nameFile2.textContent = `Archivo seleccionado: ${file2.name}`;
+        
+        // Leer el contenido del archivo 1
+        similitudes.style.display = 'block';
 
-            // Enviar una petición al servidor para reinicializar el Trie
-            fetch('/reset-trie', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(() => {
-                // Después de reinicializar el Trie, subir el archivo
-                fetch('/longest-palindrome', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ text: fileContent }) // Enviar el contenido del archivo
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const highlightedText = highlightPalindrome(fileContent, data.longestPalindrome);
-                    document.getElementById('result').innerHTML = highlightedText;
+        // Bloquear las tarjetas
+        bloquearTarjetas();
+
+        // Leer el contenido del archivo 1
+        similitudes.style.display = 'block';
+
+        
+    }else if(file1 && !file2){
+        desbloquearTarjetas();
+         // Leer el contenido del archivo
+         const reader = new FileReader();
+         reader.onload = function(event) {
+             const fileContent = event.target.result;
+ 
+             // Enviar una petición al servidor para reinicializar el Trie
+             fetch('/reset-trie', {
+                 method: 'POST',
+                 headers: {
+                     'Content-Type': 'application/json'
+                 }
+             }).then(() => {
+                 // Después de reinicializar el Trie, subir el archivo
+                 fetch('/longest-palindrome', {
+                     method: 'POST',
+                     headers: {
+                         'Content-Type': 'application/json'
+                     },
+                     body: JSON.stringify({ text: fileContent }) // Enviar el contenido del archivo
+                 })
+                 .then(response => response.json())
+                 .then(data => {
+                     const highlightedText = highlightPalindrome(fileContent, data.longestPalindrome);
+                     document.getElementById('result').innerHTML = highlightedText;
+                    
                    
-                  
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            });
-        };
-        reader.readAsText(file);
+                 })
+                 .catch(error => {
+                     console.error('Error:', error);
+                 });
+             });
+         };
+         reader.readAsText(file1);
     }
+        
 });
 
+function desbloquearTarjetas() {
+    palindromosCard.style.pointerEvents = 'auto';
+    trieCard.style.pointerEvents = 'auto';
+    buscarCard.style.pointerEvents = 'auto';
+    palindromosCard.style.opacity = '1';
+    trieCard.style.opacity = '1';
+    buscarCard.style.opacity = '1';
+}
 
+function bloquearTarjetas() {
+    palindromosCard.style.pointerEvents = 'none';
+    trieCard.style.pointerEvents = 'none';
+    buscarCard.style.pointerEvents = 'none';
+    palindromosCard.style.opacity = '0.5';
+    trieCard.style.opacity = '0.5';
+    buscarCard.style.opacity = '0.5';
+}
 
 // Función para resaltar el palíndromo más largo en el texto
+// Función para resaltar todas las apariciones del palíndromo en el texto
 function highlightPalindrome(text, palindrome) {
     if (!palindrome) return text; // Si no hay palíndromo, devolver el texto original
 
     // Escapamos caracteres especiales del palíndromo para evitar problemas en la expresión regular
     const escapedPalindrome = palindrome.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-    // Creamos la expresión regular (insensible a mayúsculas/minúsculas) para encontrar el palíndromo
+    // Creamos la expresión regular (insensible a mayúsculas/minúsculas y global) para encontrar todas las apariciones del palíndromo
     const regex = new RegExp(`(${escapedPalindrome})`, 'gi');
-    
-    
-    // Reemplazamos el palíndromo en el texto por la versión resaltada
+
+    // Reemplazamos todas las apariciones del palíndromo en el texto por la versión resaltada
     return text.replace(regex, '<span class="highlight">$1</span>');
 }
+
 
 document.getElementById("wordInput").addEventListener("input", function() {
     const prefix = this.value;
