@@ -8,8 +8,12 @@ document.getElementById('fileInput').addEventListener('input', function() {
     }
 });
 
-document.getElementById("uploadBtn").addEventListener("click", function() {
+document.getElementById("uploadBtn").addEventListener("click", function(event) {
+    document.getElementById('poli').style.marginTop="6rem"; 
+    event.preventDefault();
     const file = document.getElementById('fileInput').files[0];
+   
+    // Mueve el contenedor hacia abajo
     
     if (file) {
         // Leer el contenido del archivo
@@ -36,6 +40,8 @@ document.getElementById("uploadBtn").addEventListener("click", function() {
                 .then(data => {
                     const highlightedText = highlightPalindrome(fileContent, data.longestPalindrome);
                     document.getElementById('result').innerHTML = highlightedText;
+                   
+                  
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -57,7 +63,8 @@ function highlightPalindrome(text, palindrome) {
 
     // Creamos la expresión regular (insensible a mayúsculas/minúsculas) para encontrar el palíndromo
     const regex = new RegExp(`(${escapedPalindrome})`, 'gi');
-
+    
+    
     // Reemplazamos el palíndromo en el texto por la versión resaltada
     return text.replace(regex, '<span class="highlight">$1</span>');
 }
@@ -118,6 +125,7 @@ function clearSuggestions() {
 }
 
 document.getElementById("searchBtn").addEventListener("click", function() {
+   
     const fileInput = document.getElementById('fileInput');
     const textFile = fileInput.files[0];
 
@@ -142,6 +150,17 @@ document.getElementById("searchBtn").addEventListener("click", function() {
         .then(response => response.json())
         .then(data => {
             // Resaltar las posiciones encontradas en el texto
+            console.log("res" + fileContent.length);
+            if(fileContent.length < 750 && fileContent.length > 150){
+                document.getElementById('poli').style.marginTop="12rem";
+
+            }
+            if(fileContent.length < 2000 && fileContent.length > 750){
+                document.getElementById('poli').style.marginTop="25rem";
+            }
+            if(fileContent.length > 2000){
+                document.getElementById('poli').style.marginTop="30rem";
+            }
             const highlightedText = highlightPattern(fileContent, data.positions, pattern); // Pasar el patrón a la función
             document.getElementById('result3').innerHTML = highlightedText; // Muestra el texto resaltado
         })
