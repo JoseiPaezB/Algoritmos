@@ -1,11 +1,10 @@
 
-
-
-
 document.getElementById('fileInput').addEventListener('input', function() {
     var file = document.getElementById('fileInput').files[0];
     if (file) {
         document.getElementById('nameFile').innerHTML = `Archivo seleccionado: ${file.name}`;
+         // Limpia las sugerencias
+         clearSuggestions();
     }
 });
 
@@ -13,31 +12,40 @@ document.getElementById("uploadBtn").addEventListener("click", function() {
     const file = document.getElementById('fileInput').files[0];
     
     if (file) {
-        // Lee el contenido del archivo
+        // Leer el contenido del archivo
         const reader = new FileReader();
         reader.onload = function(event) {
             const fileContent = event.target.result;
 
-            // Envía el contenido al servidor
-            fetch('/longest-palindrome', {
+            // Enviar una petición al servidor para reinicializar el Trie
+            fetch('/reset-trie', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ text: fileContent }) // Envía el contenido del archivo
-            })
-            .then(response => response.json())
-            .then(data => {
-                const highlightedText = highlightPalindrome(fileContent, data.longestPalindrome);
-                document.getElementById('result').innerHTML = highlightedText;
-            })
-            .catch(error => {
-                console.error('Error:', error);
+                }
+            }).then(() => {
+                // Después de reinicializar el Trie, subir el archivo
+                fetch('/longest-palindrome', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: fileContent }) // Enviar el contenido del archivo
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const highlightedText = highlightPalindrome(fileContent, data.longestPalindrome);
+                    document.getElementById('result').innerHTML = highlightedText;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
             });
         };
         reader.readAsText(file);
     }
 });
+
 
 
 // Función para resaltar el palíndromo más largo en el texto
@@ -56,6 +64,7 @@ function highlightPalindrome(text, palindrome) {
 
 document.getElementById("wordInput").addEventListener("input", function() {
     const prefix = this.value;
+    clearSuggestions();
 
     if (prefix) {
         // Envía el prefijo al servidor para buscar palabras
@@ -69,6 +78,7 @@ document.getElementById("wordInput").addEventListener("input", function() {
         .then(response => response.json())
         .then(data => {
             showSuggestions(data.words); // Muestra las sugerencias
+
         })
         .catch(error => {
             console.error('Error:', error);
@@ -95,6 +105,9 @@ function showSuggestions(words) {
             suggestionsContainer.appendChild(suggestionItem); // Añade la sugerencia al contenedor
         });
     } 
+    else{
+        clearSuggestions(); // Limpia las sugerencias
+    }
 }
 
 // Limpia las sugerencias
