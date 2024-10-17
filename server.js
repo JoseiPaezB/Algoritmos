@@ -86,7 +86,7 @@ class Trie {
 }
 
 // Instancia del Trie
-let trie = new Trie();
+const trie = new Trie();
 
 // Ruta para procesar el archivo de texto y devolver el resultado del algoritmo de Manacher
 app.post('/longest-palindrome', (req, res) => {
@@ -95,7 +95,7 @@ app.post('/longest-palindrome', (req, res) => {
     if (!text) {
         return res.status(400).json({ error: 'No text provided.' });
     }
-    
+
     // Divide el texto en palabras y las inserta en el Trie
     const words = text.match(/\b\w+\b/g) || []; // Usa una expresión regular para obtener las palabras
     words.forEach(word => trie.insert(word));
@@ -195,10 +195,7 @@ app.post('/kmp-search', (req, res) => {
     const positions = kmpSearch(text, pattern);
     res.status(200).json({ positions: positions });
 });
-app.post('/reset-trie', (req, res) => {
-    trie = new Trie(); // Reiniciar el Trie
-    res.status(200).send('Trie reseteado');
-});
+
 // Inicia el servidor
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
