@@ -7,35 +7,40 @@ app.use(express.static('public'));
 
 // Función que implementa el algoritmo de Manacher
 function manacher(s) {
-    s = '#' + s.split('').join('#') + '#';
-    const n = s.length;
-    let l = 0, r = 0;
-    const p = new Array(n).fill(0);
+    let n = s.length;
+    let t = "$#";
+    for (let c of s) t += c + '#';
+    t += '@'; // Transformar s para manejar cadenas pares/impares
 
-    for (let i = 0; i < n; i++) {
-        if (i < r) {
-            p[i] = Math.min(r - i, p[2 * l - i]);
-        }
-        while (i + p[i] + 1 < n && i - p[i] - 1 >= 0 && s[i + p[i] + 1] === s[i - p[i] - 1]) {
+    let m = t.length, center = 0, right = 0;
+    let p = new Array(m).fill(0); // p[i] almacena el radio del palíndromo más largo centrado en i
+
+    let max_len = 0, max_center = 0;
+    for (let i = 1; i < m - 1; i++) {
+        let mirror = 2 * center - i;
+        if (i < right)
+            p[i] = Math.min(right - i, p[mirror]);
+
+        // Intentar expandir el palíndromo centrado en i
+        while (t[i + p[i] + 1] === t[i - p[i] - 1])
             p[i]++;
-        }
-        if (i + p[i] > r) {
-            l = i - p[i];
-            r = i + p[i];
-        }
-    }
 
-    let maxLen = 0;
-    let center = 0;
-    for (let i = 0; i < n; i++) {
-        if (p[i] > maxLen) {
-            maxLen = p[i];
+        // Si expande más allá de la derecha, actualiza center y right
+        if (i + p[i] > right) {
             center = i;
+            right = i + p[i];
+        }
+
+        // Actualiza la longitud máxima del palíndromo
+        if (p[i] > max_len) {
+            max_len = p[i];
+            max_center = i;
         }
     }
 
-    const start = (center - maxLen) / 2;
-    return s.slice(start * 2, start * 2 + maxLen).replace(/#/g, '');
+    // Encontrar la subcadena palíndroma más larga
+    let start = Math.floor((max_center - max_len) / 2);
+    return s.substring(start, start + max_len);
 }
 
 // Clase Trie
