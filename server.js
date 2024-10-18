@@ -91,8 +91,12 @@ class Trie {
 }
 
 function lcs(text1, text2) {
-    let m = text1.length;
-    let n = text2.length;
+    // Dividir los textos en arrays de palabras
+    let words1 = text1.split(/\s+/);  // Divide por espacios
+    let words2 = text2.split(/\s+/);
+
+    let m = words1.length;
+    let n = words2.length;
 
     // Crear la matriz dp con cadenas vacías
     const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(""));
@@ -100,24 +104,23 @@ function lcs(text1, text2) {
     // Llenar la matriz dp
     for (let i = 1; i <= m; i++) {
         for (let j = 1; j <= n; j++) {
-            if (text1[i - 1] === text2[j - 1]) {
-                dp[i][j] = dp[i - 1][j - 1] + text1[i - 1];
+            if (words1[i - 1] === words2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + words1[i - 1] + " ";
             } else {
                 dp[i][j] = (dp[i - 1][j].length > dp[i][j - 1].length) ? dp[i - 1][j] : dp[i][j - 1];
             }
         }
     }
+    // Extraer la subsecuencia común más larga de palabras
+    const lcs = dp[m][n].trim();  // Eliminar el espacio final
 
-    // Extraer la subsecuencia común más larga
-    const lcs = dp[m][n];
-    
-    // Rastrear las posiciones de las coincidencias en text1 y text2
+    // Rastrear las posiciones de las coincidencias en words1 y words2
     const pos1 = [];
     const pos2 = [];
-    
+
     let i = m, j = n;
     while (i > 0 && j > 0) {
-        if (text1[i - 1] === text2[j - 1]) {
+        if (words1[i - 1] === words2[j - 1]) {
             pos1.unshift(i - 1); // Agrega al principio para mantener el orden
             pos2.unshift(j - 1); // Agrega al principio para mantener el orden
             i--;
@@ -129,9 +132,10 @@ function lcs(text1, text2) {
         }
     }
 
-    // Devolver la subsecuencia común y las posiciones en ambos textos
+
+    // Devolver la subsecuencia común de palabras y las posiciones en ambos textos
     return {
-        lcs: lcs, 
+        lcs: lcs.split(/\s+/),  // Retorna la subsecuencia como un array de palabras
         positions: { pos1, pos2 }
     };
 }
@@ -147,22 +151,27 @@ app.post('/longest-common-subsequence', (req, res) => {
 
     // Función para resaltar caracteres en las posiciones coincidentes
     function highlightText(text, positions) {
-        let highlighted = '';
-        for (let i = 0; i < text.length; i++) {
-            if (positions.includes(i)) {
-                highlighted += `<span class="highlight">${text[i]}</span>`;
-            } else {
-                highlighted += text[i];
+        // Dividir el texto en un array de palabras
+        let words = text.split(/\s+/);
+    
+        // Crear el string con las palabras resaltadas
+        let highlighted = words.map((word, index) => {
+            // Si la posición de la palabra está en el array de posiciones, resaltarla
+            if (positions.includes(index)) {
+                return `<span class="highlight3">${word}</span>`;
             }
-        }
-        return highlighted;
+            return word;
+        });
+    
+        // Unir las palabras resaltadas en un solo string
+        return highlighted.join(' ');
     }
 
     const highlightedText1 = highlightText(text1, result.positions.pos1);
     const highlightedText2 = highlightText(text2, result.positions.pos2);
 
     res.status(200).json({
-        lcs: result.lcs,
+        lcs: result.lcs, 
         highlightedText1: highlightedText1,
         highlightedText2: highlightedText2
     });
@@ -201,7 +210,7 @@ app.post('/insert-word', (req, res) => {
     }
 
     trie.insert(word);
-    res.status(200).json({ message: `Word "${word}" inserted successfully.` });
+    res.status(200).json({ message: `Word "${word}" inserted successfully. `});
 });
 
 // Ruta para buscar palabras con un prefijo

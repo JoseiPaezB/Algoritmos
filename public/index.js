@@ -24,6 +24,7 @@ document.getElementById("uploadBtn").addEventListener("click", function(event) {
         
         const reader1 = new FileReader();
         const reader2 = new FileReader();
+        document.getElementById('container').style.marginTop = '5rem';
         
         reader1.onload = function(event) {
             const fileContent1 = event.target.result;
@@ -186,7 +187,6 @@ function clearSuggestions() {
 }
 
 document.getElementById("searchBtn").addEventListener("click", function() {
-   
     const fileInput = document.getElementById('fileInput1');
     const textFile = fileInput.files[0];
 
@@ -197,7 +197,7 @@ document.getElementById("searchBtn").addEventListener("click", function() {
 
     const reader = new FileReader();
     reader.onload = function(event) {
-        const fileContent = event.target.result;
+         fileContent = event.target.result;
         const pattern = document.getElementById('wordInput2').value; // Obtener el patrón del segundo input
 
         // Envía el texto y el patrón al servidor
@@ -210,20 +210,20 @@ document.getElementById("searchBtn").addEventListener("click", function() {
         })
         .then(response => response.json())
         .then(data => {
-            // Resaltar las posiciones encontradas en el texto
-            console.log("res" + fileContent.length);
-            if(fileContent.length < 750 && fileContent.length > 150){
-                document.getElementById('poli').style.marginTop="12rem";
+            // Guardar las posiciones obtenidas
+            positions = data.positions;
 
+            if (positions.length === 0) {
+                document.getElementById('result3').innerHTML = "No se encontraron coincidencias.";
+                return;
             }
-            if(fileContent.length < 2000 && fileContent.length > 750){
-                document.getElementById('poli').style.marginTop="25rem";
-            }
-            if(fileContent.length > 2000){
-                document.getElementById('poli').style.marginTop="30rem";
-            }
-            const highlightedText = highlightPattern(fileContent, data.positions, pattern); // Pasar el patrón a la función
-            document.getElementById('result3').innerHTML = highlightedText; // Muestra el texto resaltado
+
+            // Mostrar la primera coincidencia
+            currentIndex = 0;
+            showMatch(fileContent, pattern);
+
+            // Ajustar el margen dependiendo del tamaño del archivo
+            adjustMargin(fileContent.length);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -231,6 +231,56 @@ document.getElementById("searchBtn").addEventListener("click", function() {
     };
     reader.readAsText(textFile);
 });
+
+// Función para resaltar la coincidencia actual
+function showMatch(fileContent, pattern) {
+    const highlightedText = highlightPattern(fileContent, [positions[currentIndex]], pattern);
+    document.getElementById('result3').innerHTML = highlightedText; // Muestra el texto resaltado
+}
+
+// Función para ajustar el margen del elemento 'poli' basado en el tamaño del archivo
+function adjustMargin(fileLength) {
+    if (fileLength < 750 && fileLength > 150) {
+        document.getElementById('poli').style.marginTop = "12rem";
+    }
+    if (fileLength < 2000 && fileLength > 750) {
+        document.getElementById('poli').style.marginTop = "25rem";
+    }
+    if (fileLength > 2000) {
+        document.getElementById('poli').style.marginTop = "30rem";
+    }
+}
+
+// Evento para mostrar la siguiente coincidencia
+document.getElementById('nextBtn').addEventListener('click', function() {
+    if (currentIndex < positions.length - 1) {
+        currentIndex++;
+        showMatch(fileContent, document.getElementById('wordInput2').value);
+    } else {
+        alert("No hay más coincidencias.");
+    }
+});
+
+// Evento para mostrar la coincidencia anterior
+document.getElementById('prevBtn').addEventListener('click', function() {
+    if (currentIndex > 0) {
+        currentIndex--;
+        showMatch(fileContent, document.getElementById('wordInput2').value);
+    } else {
+        alert("Estás en la primera coincidencia.");
+    }
+});
+
+// Función para resaltar las coincidencias
+function highlightPattern(text, positions, pattern) {
+    let highlightedText = text;
+    positions.forEach(pos => {
+        const start = pos;
+        const end = start + pattern.length;
+        highlightedText = highlightedText.slice(0, start) + '<mark>' + highlightedText.slice(start, end) + '</mark>' + highlightedText.slice(end);
+    });
+    return highlightedText;
+}
 
 // Función para resaltar el patrón en el texto
 function highlightPattern(text, positions, pattern) {
