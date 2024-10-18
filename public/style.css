@@ -3,6 +3,13 @@ body{
     font-family: 'Trebuchet MS', sans-serif;
 }
 
+.cards-similitudes {
+    display: flex;
+    gap: 20px; /* Espacio entre las tarjetas */
+  }
+  
+
+  
 .poli {
     
     font-family: 'Courier New', Courier, monospace !important;

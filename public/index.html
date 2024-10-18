@@ -39,7 +39,7 @@
                 <a class="nav-link active" aria-current="page" href="#buscar">Buscar patron</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="#">Similitud</a>
+                <a class="nav-link active" href="#similitud">Similitud</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" href="#palindromos">Palindromos</a> 
@@ -61,22 +61,32 @@
             <form id="uploadForm">
               <input type="file" id="fileInput1" accept=".txt">
               <p id="nameFile1">Archivo seleccionado: Ninguno</p>
-              <br>
               <input type="file" id="fileInput2" accept=".txt">
               <p id="nameFile2">Archivo seleccionado: Ninguno</p>
               <br>
               <button type="button" id="uploadBtn">Subir archivos</button>
-          </form>
+            </form>
 
         </br>
 
-        <!-- Tarjeta 4: Similitudes -->
-        <div class="card" id="similitudes" style="width: 18rem; background-color: gray; color: white; display: none;">
-          <div class="card-body">
-              <h5 class="card-title">Similitudes</h5>
-              <p class="card-text">Ambos archivos han sido subidos exitosamente.</p>
+        <!-- Tarjeta 4 y 5: Similitudes -->
+        <div class="cards-similitudes" id="similitud">
+          <div class="card" id="similitudes1" style="width: 40rem;background-color: black; color: white; display: none;">
+            <div class="card-body">
+              <h5 class="card-title">Similitudes Texto 1</h5>
+              <div id="highlightedText1" style="max-height: 400px; overflow-y: auto; position: relative; padding: 10px; margin-top: 20px;"></div>
+            </div>
+          </div>
+        
+          <div class="card" id="similitudes2" style="width: 40rem;background-color: black; color: white; display: none;">
+            <div class="card-body">
+              <h5 class="card-title">Similitudes Texto 2</h5>
+              <div id="highlightedText2" style="max-height: 400px; overflow-y: auto; position: relative; padding: 10px; margin-top: 20px;"></div>
+            </div>
           </div>
         </div>
+
+        <br>
 
         <!-- Tarjeta 1: Palíndromos -->
         <div class="card" id="palindromos" style="width: 18rem; background-color: black; color:white;">
@@ -116,6 +126,8 @@
     </section>
 
     <script>
+      
+
       // Obtener todas las tarjetas por su ID
       const palindromosCard = document.getElementById('palindromos');
       const trieCard = document.getElementById('trie');
