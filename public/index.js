@@ -20,18 +20,53 @@ document.getElementById("uploadBtn").addEventListener("click", function(event) {
         nameFile1.textContent = `Archivo seleccionado: ${file1.name}`;
         nameFile2.textContent = `Archivo seleccionado: ${file2.name}`;
         
-        // Leer el contenido del archivo 1
-        similitudes.style.display = 'block';
 
         // Bloquear las tarjetas
         bloquearTarjetas();
 
         // Leer el contenido del archivo 1
-        similitudes.style.display = 'block';
+        similitudes1.style.display = 'block';
+        similitudes2.style.display = 'block';
+        
+        const reader1 = new FileReader();
+        const reader2 = new FileReader();
+        
+        reader1.onload = function(event) {
+            const fileContent1 = event.target.result;
+            console.log(fileContent1);
+            reader2.onload = function(event) {
+                const fileContent2 = event.target.result;
+                console.log("arerererer"); 
+                // Enviar una petición al servidor para comparar los archivos
+                fetch('/longest-common-subsequence', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text1: fileContent1, text2: fileContent2 }) // Enviar el contenido de ambos archivos
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Mostrar las similitudes en el contenedor
+                    const highlightedText11 = data.highlightedText1;
+                    const highlightedText22 = data.highlightedText2;
+                    document.getElementById('highlightedText1').textContent = data.highlightedText11;
+                    document.getElementById('highlightedText2').innerHTML = data.highlightedText22;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            };
+            reader2.readAsText(file2);
+        };
 
         
     }else if(file1 && !file2){
         desbloquearTarjetas();
+        similitudes1.style.display = 'none';
+        similitudes2.style.display = 'none';
+
+        
          // Leer el contenido del archivo
          const reader = new FileReader();
          reader.onload = function(event) {
@@ -160,7 +195,7 @@ function clearSuggestions() {
 
 document.getElementById("searchBtn").addEventListener("click", function() {
    
-    const fileInput = document.getElementById('fileInput');
+    const fileInput = document.getElementById('fileInput1');
     const textFile = fileInput.files[0];
 
     if (!textFile) {

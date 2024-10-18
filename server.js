@@ -90,6 +90,72 @@ class Trie {
     }
 }
 
+function lcs(text1, text2) {
+    let m = text1.length;
+    let n = text2.length;
+
+    // Crear la matriz dp con cadenas vacías
+    const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(""));
+
+    // Llenar la matriz dp y también guardar las posiciones de las coincidencias
+    const pos1 = []; // Para guardar las posiciones en text1
+    const pos2 = []; // Para guardar las posiciones en text2
+
+    for (var i = 1; i <= m; i++) {
+        for (var j = 1; j <= n; j++) {
+            if (text1[i - 1] === text2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + text1[i - 1];
+                pos1.push(i - 1); // Almacena la posición en text1
+                pos2.push(j - 1); // Almacena la posición en text2
+            } else {
+                dp[i][j] = (dp[i - 1][j].length > dp[i][j - 1].length) ? dp[i - 1][j] : dp[i][j - 1];
+            }
+        }
+    }
+
+    // Devolver la subsecuencia común y las posiciones en ambos textos
+    return {
+        lcs: dp[m][n], 
+        positions: { pos1, pos2 } // Retorna las posiciones donde hay coincidencias
+    };
+}
+
+
+app.post('/longest-common-subsequence', (req, res) => {
+    console.log("ererer");
+    const { text1, text2 } = req.body;
+
+    if (!text1 || !text2) {
+        return res.status(400).json({ error: 'Texts must be provided.' });
+    }
+
+    const result = lcs(text1, text2);
+
+    // Función para resaltar caracteres en las posiciones coincidentes
+    function highlightText(text, positions) {
+        let highlighted = '';
+        for (let i = 0; i < text.length; i++) {
+            if (positions.includes(i)) {
+                highlighted += `<span style="color: blue;">${text[i]}</span>`;
+            } else {
+                highlighted += text[i];
+            }
+        }
+        return highlighted;
+    }
+
+    const highlightedText1 = highlightText(text1, result.positions.pos1);
+    const highlightedText2 = highlightText(text2, result.positions.pos2);
+
+    res.status(200).json({
+        lcs: result.lcs,
+        highlightedText1: highlightedText1,
+        highlightedText2: highlightedText2
+    });
+});
+
+    
+
 // Instancia del Trie
 const trie = new Trie();
 
