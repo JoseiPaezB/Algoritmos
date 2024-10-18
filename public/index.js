@@ -24,7 +24,7 @@ document.getElementById("uploadBtn").addEventListener("click", function(event) {
         
         const reader1 = new FileReader();
         const reader2 = new FileReader();
-        document.getElementById('container').style.marginTop = '5rem';
+        document.getElementById('container').style.marginTop = '30rem';
         
         reader1.onload = function(event) {
             const fileContent1 = event.target.result;
