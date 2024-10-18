@@ -5,6 +5,15 @@ body{
     font-family: 'Trebuchet MS', sans-serif;
     min-height: 100vh;
 }
+.dummy{
+    
+    color:#fff;
+    border:2px solid #fff; 
+    border-radius: 5px; 
+    padding:1rem; 
+}
+
+
 
 .cards-similitudes {
     display: flex;
