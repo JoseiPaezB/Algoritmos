@@ -9,7 +9,7 @@ document.getElementById('fileInput1').addEventListener('input', function() {
 });
 
 document.getElementById("uploadBtn").addEventListener("click", function(event) {
-    document.getElementById('poli').style.marginTop = "6rem"; 
+     
     event.preventDefault();
     const file1 = document.getElementById('fileInput1').files[0];
     const file2 = document.getElementById('fileInput2').files[0];
@@ -24,7 +24,7 @@ document.getElementById("uploadBtn").addEventListener("click", function(event) {
         
         const reader1 = new FileReader();
         const reader2 = new FileReader();
-        document.getElementById('container').style.marginTop = '5rem';
+      
         
         reader1.onload = function(event) {
             const fileContent1 = event.target.result;
@@ -239,17 +239,17 @@ function showMatch(fileContent, pattern) {
 }
 
 // Función para ajustar el margen del elemento 'poli' basado en el tamaño del archivo
-function adjustMargin(fileLength) {
-    if (fileLength < 750 && fileLength > 150) {
-        document.getElementById('poli').style.marginTop = "12rem";
-    }
-    if (fileLength < 2000 && fileLength > 750) {
-        document.getElementById('poli').style.marginTop = "25rem";
-    }
-    if (fileLength > 2000) {
-        document.getElementById('poli').style.marginTop = "30rem";
-    }
-}
+// function adjustMargin(fileLength) {
+//     if (fileLength < 750 && fileLength > 150) {
+//         document.getElementById('poli').style.marginTop = "12rem";
+//     }
+//     if (fileLength < 2000 && fileLength > 750) {
+//         document.getElementById('poli').style.marginTop = "25rem";
+//     }
+//     if (fileLength > 2000) {
+//         document.getElementById('poli').style.marginTop = "30rem";
+//     }
+// }
 
 // Evento para mostrar la siguiente coincidencia
 document.getElementById('nextBtn').addEventListener('click', function() {

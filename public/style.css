@@ -1,6 +1,9 @@
 body{
-    background-color: white !important;
+    background:url(https://i.pinimg.com/originals/96/28/be/9628bea6310e0466bb25d38c919c9e0f.gif);
+    background-size: cover;
+    background-repeat: no-repeat;
     font-family: 'Trebuchet MS', sans-serif;
+    min-height: 100vh;
 }
 
 .cards-similitudes {
@@ -8,7 +11,12 @@ body{
     gap: 20px; /* Espacio entre las tarjetas */
   }
   
-
+ul li a {
+    color:#fff !important;
+}
+.container-fluid a {
+    color:#fff !important;
+}
   
 .poli {
     
@@ -16,14 +24,14 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100%;
     margin: 0;
 }
 .containerr {
     
-    
-    margin-top:15rem; 
-    background-color: white;
+    color:#fff; 
+    margin-top:2rem; 
+   
     padding: 2rem;
     border-radius: 8px;
     
@@ -33,6 +41,7 @@ body{
     align-items: center;
     justify-content: center;
     min-height: 100vh; /* Esto hace que ocupe toda la altura de la página */
+    overflow: auto; /* Esto es para que si el contenido es muy largo, se pueda hacer scroll */
 }
 h1 {
     text-align: center;
@@ -177,6 +186,10 @@ input:not(:placeholder-shown) + label {
 
 input:not(:placeholder-shown) {
     border-color: #f6f6f6;
+}
+nav{
+    background:none !important; 
+    color:#fff !important;
 }
 
 .navbar {

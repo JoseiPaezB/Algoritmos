@@ -16,7 +16,7 @@
             }
             to {
                 transform: scale(1.05);
-                box-shadow: 0 0 20px rgb(43, 49, 41);
+                box-shadow: 0 0 20px rgb(176, 181, 176);
             }
         }
 
@@ -27,8 +27,8 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
-        <div class="container-fluid">
+    <nav class="navbar bg-transparent navbar-expand-lg " >
+        <div class="container-fluid" style="color:#fff">
           <a class="navbar-brand" id="refreshButton" href="javascript:void(0)">Algoritmos</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -42,7 +42,7 @@
                 <a class="nav-link active" href="#similitud">Similitud</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="#palindromos">Palindromos</a> 
+                <a class="nav-link active" href="#palindromos">Palindromo</a> 
               <li class="nav-item">
                 <a class="nav-link active" aria-disabled="true" href="#trie">AutoCompletar</a>
               </li>
@@ -91,7 +91,7 @@
         <!-- Tarjeta 1: Palíndromos -->
         <div class="card" id="palindromos" style="width: 18rem; background-color: black; color:white;">
           <div class="card-body">
-            <h5 class="card-title">Palíndromos</h5>
+            <h5 class="card-title">Palíndromo</h5>
             <div id="result" style="max-height: 400px; overflow-y: auto; position: relative; padding: 10px; margin-top: 20px;"></div>
           </div>
         </div>
