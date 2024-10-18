@@ -97,32 +97,46 @@ function lcs(text1, text2) {
     // Crear la matriz dp con cadenas vacías
     const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(""));
 
-    // Llenar la matriz dp y también guardar las posiciones de las coincidencias
-    const pos1 = []; // Para guardar las posiciones en text1
-    const pos2 = []; // Para guardar las posiciones en text2
-
-    for (var i = 1; i <= m; i++) {
-        for (var j = 1; j <= n; j++) {
+    // Llenar la matriz dp
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
             if (text1[i - 1] === text2[j - 1]) {
                 dp[i][j] = dp[i - 1][j - 1] + text1[i - 1];
-                pos1.push(i - 1); // Almacena la posición en text1
-                pos2.push(j - 1); // Almacena la posición en text2
             } else {
                 dp[i][j] = (dp[i - 1][j].length > dp[i][j - 1].length) ? dp[i - 1][j] : dp[i][j - 1];
             }
         }
     }
 
+    // Extraer la subsecuencia común más larga
+    const lcs = dp[m][n];
+    
+    // Rastrear las posiciones de las coincidencias en text1 y text2
+    const pos1 = [];
+    const pos2 = [];
+    
+    let i = m, j = n;
+    while (i > 0 && j > 0) {
+        if (text1[i - 1] === text2[j - 1]) {
+            pos1.unshift(i - 1); // Agrega al principio para mantener el orden
+            pos2.unshift(j - 1); // Agrega al principio para mantener el orden
+            i--;
+            j--;
+        } else if (dp[i - 1][j].length > dp[i][j - 1].length) {
+            i--;
+        } else {
+            j--;
+        }
+    }
+
     // Devolver la subsecuencia común y las posiciones en ambos textos
     return {
-        lcs: dp[m][n], 
-        positions: { pos1, pos2 } // Retorna las posiciones donde hay coincidencias
+        lcs: lcs, 
+        positions: { pos1, pos2 }
     };
 }
 
-
 app.post('/longest-common-subsequence', (req, res) => {
-    console.log("ererer");
     const { text1, text2 } = req.body;
 
     if (!text1 || !text2) {
@@ -136,7 +150,7 @@ app.post('/longest-common-subsequence', (req, res) => {
         let highlighted = '';
         for (let i = 0; i < text.length; i++) {
             if (positions.includes(i)) {
-                highlighted += `<span style="color: blue;">${text[i]}</span>`;
+                highlighted += `<span class="highlight">${text[i]}</span>`;
             } else {
                 highlighted += text[i];
             }

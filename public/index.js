@@ -9,22 +9,16 @@ document.getElementById('fileInput1').addEventListener('input', function() {
 });
 
 document.getElementById("uploadBtn").addEventListener("click", function(event) {
-    document.getElementById('poli').style.marginTop="6rem"; 
+    document.getElementById('poli').style.marginTop = "6rem"; 
     event.preventDefault();
     const file1 = document.getElementById('fileInput1').files[0];
     const file2 = document.getElementById('fileInput2').files[0];
    
-    // Mueve el contenedor hacia abajo
-    
     if (file1 && file2) {
         nameFile1.textContent = `Archivo seleccionado: ${file1.name}`;
         nameFile2.textContent = `Archivo seleccionado: ${file2.name}`;
         
-
-        // Bloquear las tarjetas
         bloquearTarjetas();
-
-        // Leer el contenido del archivo 1
         similitudes1.style.display = 'block';
         similitudes2.style.display = 'block';
         
@@ -34,75 +28,73 @@ document.getElementById("uploadBtn").addEventListener("click", function(event) {
         reader1.onload = function(event) {
             const fileContent1 = event.target.result;
             console.log(fileContent1);
+            
             reader2.onload = function(event) {
                 const fileContent2 = event.target.result;
-                console.log("arerererer"); 
-                // Enviar una petición al servidor para comparar los archivos
+                console.log("Contenido del segundo archivo: ", fileContent2);
+                
                 fetch('/longest-common-subsequence', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ text1: fileContent1, text2: fileContent2 }) // Enviar el contenido de ambos archivos
+                    body: JSON.stringify({ text1: fileContent1, text2: fileContent2 })
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // Mostrar las similitudes en el contenedor
-                    const highlightedText11 = data.highlightedText1;
-                    const highlightedText22 = data.highlightedText2;
-                    document.getElementById('highlightedText1').textContent = data.highlightedText11;
-                    document.getElementById('highlightedText2').innerHTML = data.highlightedText22;
+                    console.log(data.highlightedText1);
+                    document.getElementById('highlightedText1').innerHTML = data.highlightedText1;
+                    document.getElementById('highlightedText2').innerHTML = data.highlightedText2;
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
             };
+            
+            // Invocamos la lectura del archivo 2 una vez que el archivo 1 haya sido leído.
             reader2.readAsText(file2);
         };
-
         
-    }else if(file1 && !file2){
+        // Aquí invocamos la lectura del archivo 1
+        reader1.readAsText(file1);
+
+    } else if (file1 && !file2) {
         desbloquearTarjetas();
         similitudes1.style.display = 'none';
         similitudes2.style.display = 'none';
 
-        
-         // Leer el contenido del archivo
-         const reader = new FileReader();
-         reader.onload = function(event) {
-             const fileContent = event.target.result;
- 
-             // Enviar una petición al servidor para reinicializar el Trie
-             fetch('/reset-trie', {
-                 method: 'POST',
-                 headers: {
-                     'Content-Type': 'application/json'
-                 }
-             }).then(() => {
-                 // Después de reinicializar el Trie, subir el archivo
-                 fetch('/longest-palindrome', {
-                     method: 'POST',
-                     headers: {
-                         'Content-Type': 'application/json'
-                     },
-                     body: JSON.stringify({ text: fileContent }) // Enviar el contenido del archivo
-                 })
-                 .then(response => response.json())
-                 .then(data => {
-                     const highlightedText = highlightPalindrome(fileContent, data.longestPalindrome);
-                     document.getElementById('result').innerHTML = highlightedText;
-                    
-                   
-                 })
-                 .catch(error => {
-                     console.error('Error:', error);
-                 });
-             });
-         };
-         reader.readAsText(file1);
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const fileContent = event.target.result;
+            
+            fetch('/reset-trie', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(() => {
+                fetch('/longest-palindrome', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: fileContent })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const highlightedText = highlightPalindrome(fileContent, data.longestPalindrome);
+                    document.getElementById('result').innerHTML = highlightedText;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        };
+
+        reader.readAsText(file1);
     }
-        
 });
+
 
 function desbloquearTarjetas() {
     palindromosCard.style.pointerEvents = 'auto';
