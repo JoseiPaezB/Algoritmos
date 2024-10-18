@@ -12,8 +12,24 @@ body{
     border-radius: 5px; 
     padding:1rem; 
 }
+footer{
+    font-family: 'Courier New', Courier, monospace !important;
+}
 
+.footer2{
+    display:flex; 
+    justify-content: right;
+    align-items: right;
+}
 
+.foot{
+    color:#fff; 
+    font-size:0.7rem; 
+    font-weight:600; 
+    padding-right:1rem; 
+    margin-bottom:1rem; 
+     
+}
 
 .cards-similitudes {
     display: flex;
