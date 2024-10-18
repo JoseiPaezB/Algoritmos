@@ -171,7 +171,7 @@ app.post('/longest-common-subsequence', (req, res) => {
     
 
 // Instancia del Trie
-const trie = new Trie();
+let trie = new Trie();
 
 // Ruta para procesar el archivo de texto y devolver el resultado del algoritmo de Manacher
 app.post('/longest-palindrome', (req, res) => {
@@ -279,6 +279,11 @@ app.post('/kmp-search', (req, res) => {
 
     const positions = kmpSearch(text, pattern);
     res.status(200).json({ positions: positions });
+});
+
+app.post('/reset-trie', (req, res) => {
+    trie = new Trie(); // Reiniciar el Trie
+    res.status(200).send('Trie reseteado');
 });
 
 // Inicia el servidor
